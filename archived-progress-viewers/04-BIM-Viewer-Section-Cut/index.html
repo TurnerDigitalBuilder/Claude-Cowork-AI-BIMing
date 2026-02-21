@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIM Model Viewer</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Loading Overlay (init only) -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">Initializing IFC engine...</div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<!-- Model Loading Toast (non-blocking, shown during file loads) -->
+<div class="load-toast" id="loadToast">
+  <div class="load-toast-header">
+    <div class="load-toast-spinner"></div>
+    <div class="load-toast-title" id="loadToastTitle">Loading models...</div>
+    <div class="load-toast-timer" id="loadToastTimer">0s</div>
+  </div>
+  <div class="load-toast-progress">
+    <div class="load-toast-progress-fill" id="loadToastProgressFill"></div>
+  </div>
+  <div class="load-toast-step" id="loadToastStep">Preparing...</div>
+  <div class="load-toast-queue" id="loadToastQueue"></div>
+</div>
+
+<!-- Drop Zone -->
+<div class="drop-zone" id="dropZone">
+  <div class="drop-zone-content">
+    <h2>Drop IFC Files</h2>
+    <p>Release to load your .ifc models</p>
+  </div>
+</div>
+
+<!-- Hidden File Input (multiple) -->
+<input type="file" id="fileInput" accept=".ifc" multiple style="display:none">
+
+<!-- App Layout -->
+<div class="app">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="header">
+      <h1 id="modelTitle">BIM Model Viewer</h1>
+      <div class="subtitle" id="modelSubtitle">Load IFC files to begin</div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="tree">Spatial</div>
+      <div class="tab" data-tab="elements">Elements</div>
+      <div class="tab" data-tab="properties">Properties</div>
+      <div class="tab" data-tab="models">Models</div>
+    </div>
+
+    <!-- SPATIAL TREE PANEL -->
+    <div class="panel active" id="panel-tree">
+      <div id="welcomePanel" class="welcome">
+        <h2>BIM Model Viewer</h2>
+        <p>Load any IFC models to explore the spatial structure, inspect element properties, and navigate your building model — all in the browser.</p>
+        <button class="browse-btn" id="browseBtn">Browse for IFC Files</button>
+        <div class="or-text">or</div>
+        <div class="drop-hint">Drag &amp; drop .ifc files anywhere</div>
+      </div>
+      <div id="treeContent" class="hidden">
+        <div class="filter-bar">
+          <select id="filterStorey"><option value="all">All Levels</option></select>
+          <select id="filterType"><option value="all">All Types</option></select>
+        </div>
+        <div id="spatialTree"></div>
+      </div>
+    </div>
+
+    <!-- ELEMENTS PANEL -->
+    <div class="panel" id="panel-elements">
+      <div class="search-box">
+        <input type="text" id="elementSearch" placeholder="Search elements by name, type, or level...">
+      </div>
+      <div id="elementsList"></div>
+    </div>
+
+    <!-- PROPERTIES PANEL -->
+    <div class="panel" id="panel-properties">
+      <div id="detailPlaceholder" style="padding:20px;color:var(--text-muted);text-align:center;margin-top:40px;">
+        Select an element to view its properties.
+      </div>
+      <div id="detailContent" style="display:none;"></div>
+    </div>
+
+    <!-- MODELS PANEL -->
+    <div class="panel" id="panel-models">
+      <div class="models-toolbar">
+        <button class="btn-primary btn-sm" id="btnAppendModels">
+          <span class="icon">+</span> Append Models
+        </button>
+        <button class="btn-danger-sm" id="btnClearAll">
+          <span class="icon">&times;</span> Clear All
+        </button>
+      </div>
+      <div id="modelsList" class="models-list">
+        <div class="models-empty" id="modelsEmpty">No models loaded. Use the Browse button or drag &amp; drop IFC files to load.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3D Viewer -->
+  <div class="viewer">
+    <div id="canvas-container"></div>
+
+    <div class="viewer-overlay">
+      <div class="viewer-info" id="viewerInfo">No model loaded</div>
+      <div class="viewer-tools">
+        <button class="viewer-btn" id="btnResetView" title="Reset view (Esc)">
+          <span class="icon">&#8634;</span> Reset
+        </button>
+        <button class="viewer-btn" id="btnRotateModel" title="Cycle axis orientation (R)">
+          <span class="icon">&#10227;</span> Axis
+        </button>
+        <button class="viewer-btn" id="btnWireframe" title="Toggle wireframe (W)">
+          <span class="icon">&#9638;</span> Wire
+        </button>
+        <button class="viewer-btn" id="btnXray" title="Toggle x-ray (X)">
+          <span class="icon">&#9671;</span> X-Ray
+        </button>
+        <button class="viewer-btn" id="btnSectionCut" title="Section cut (C)">
+          <span class="icon">&#9986;</span> Section
+        </button>
+      </div>
+    </div>
+
+    <div class="selection-info" id="selectionInfo">
+      <h3 id="selName"></h3>
+      <div class="sel-meta" id="selMeta"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Import Map for ES modules (CDN, no build step) -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<!-- web-ifc WASM engine -->
+<script src="https://unpkg.com/web-ifc@0.0.66/web-ifc-api-iife.js"></script>
+
+<!-- Viewer module -->
+<script type="module" src="viewer.js"></script>
+
+<!-- Section Cut tool -->
+<script type="module">
+  import { toggle } from './section-cut.js';
+  document.getElementById('btnSectionCut').addEventListener('click', toggle);
+</script>
+
+</body>
+</html>
