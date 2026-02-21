@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Cowork AI BIMing</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-hover: #222633;
+    --border: #2a2e3d;
+    --accent: #4f8cff;
+    --accent-dim: rgba(79,140,255,0.12);
+    --text: #e2e4ea;
+    --text-muted: #8b90a0;
+    --green: #34d399;
+    --orange: #f59e0b;
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 80px 24px 48px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 640px;
+    margin: 0 auto 32px;
+  }
+
+  /* Latest CTA */
+  .latest-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 24px rgba(79,140,255,0.3);
+  }
+  .latest-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(79,140,255,0.4);
+  }
+  .latest-cta svg { width: 20px; height: 20px; }
+
+  /* Section */
+  .section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
+  }
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .section-subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+  }
+
+  /* Cards Grid */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    background: var(--surface-hover);
+    transform: translateY(-2px);
+  }
+  .card-number {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .card-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    flex: 1;
+  }
+  .card-tag {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    align-self: flex-start;
+  }
+  .card-tag.latest {
+    background: rgba(52,211,153,0.12);
+    color: var(--green);
+  }
+
+  /* About */
+  .about-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 28px;
+  }
+  .about-box h3 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+  .about-box p, .about-box li {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+  .about-box ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 12px;
+  }
+  .about-box li {
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+  .about-box li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+    font-family: monospace;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 24px 60px;
+    border-top: 1px solid var(--border);
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  footer a:hover { text-decoration: underline; }
+  footer p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    margin-top: 8px;
+  }
+  .gh-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+  }
+  .gh-link svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">Experiment &mdash; Built with Claude</div>
+  <h1>AI <span>BIMing</span></h1>
+  <p>An open-source experiment in building a full-featured IFC/BIM viewer entirely through AI-assisted development. Each iteration adds real construction technology capabilities &mdash; from 3D model loading to quantity takeoffs, cost estimation, and production tracking.</p>
+  <a class="latest-cta" href="lastest-viewer/index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    Launch Latest Viewer
+  </a>
+</div>
+
+<!-- Progress Viewers -->
+<div class="section">
+  <div class="section-title">Build Progress</div>
+  <div class="section-subtitle">Each version represents a single conversation with Claude Cowork, iteratively adding capabilities to the viewer.</div>
+
+  <div class="cards">
+
+    <a class="card" href="archived-progress-viewers/01-BIM-Viewer-Single/index.html">
+      <div class="card-number">Version 01</div>
+      <div class="card-title">Single Model Viewer</div>
+      <div class="card-desc">The starting point. Load and render a single IFC file in the browser using Three.js and web-ifc. Orbit, pan, zoom, and click to select individual building elements.</div>
+      <div class="card-tag">Foundation</div>
+    </a>
+
+    <a class="card" href="archived-progress-viewers/02-BIM-Viewer-Multiple%20Models/index.html">
+      <div class="card-number">Version 02</div>
+      <div class="card-title">Multi-Model Support</div>
+      <div class="card-desc">Load multiple IFC files simultaneously into a single scene. Supports drag-and-drop loading, per-model visibility toggling, and a non-blocking loading toast for large files.</div>
+      <div class="card-tag">Multi-model</div>
+    </a>
+
+    <a class="card" href="archived-progress-viewers/03-BIM-Viewer-Sun-Study/index.html">
+      <div class="card-number">Version 03</div>
+      <div class="card-title">Sun Study</div>
+      <div class="card-desc">Adds solar analysis with configurable geographic location, date, and time-of-day. Renders realistic directional sunlight and shadows to study daylight conditions on the building model.</div>
+      <div class="card-tag">Analysis</div>
+    </a>
+
+    <a class="card" href="archived-progress-viewers/04-BIM-Viewer-Section-Cut/index.html">
+      <div class="card-number">Version 04</div>
+      <div class="card-title">Section Cutting</div>
+      <div class="card-desc">Introduces clipping planes for X, Y, and Z axes. Interactively slice through the model to inspect internal building elements, structure, and spatial relationships.</div>
+      <div class="card-tag">Inspection</div>
+    </a>
+
+    <a class="card" href="archived-progress-viewers/05-BIM-Viewer-Model-Organizer/index.html">
+      <div class="card-number">Version 05</div>
+      <div class="card-title">Model Organizer &amp; UniFormat</div>
+      <div class="card-desc">Classifies every IFC element into UniFormat II categories. Browse the model tree by building system, toggle visibility per classification, and review source confidence for each mapping.</div>
+      <div class="card-tag">Classification</div>
+    </a>
+
+    <a class="card" href="archived-progress-viewers/06-BIM-Viewer-Quantities/index.html">
+      <div class="card-number">Version 06</div>
+      <div class="card-title">Quantity Takeoffs</div>
+      <div class="card-desc">Extracts quantities (area, volume, length, count) from IFC element properties. Aggregates by UniFormat category and storey with inline quantity detail tables and CSV export.</div>
+      <div class="card-tag">Quantities</div>
+    </a>
+
+    <a class="card" href="archived-progress-viewers/07-BIM-Viewer-Estimate/index.html">
+      <div class="card-number">Version 07</div>
+      <div class="card-title">Cost Estimation</div>
+      <div class="card-desc">Adds editable unit costs against each UniFormat line item. Computes extended totals, supports cost overrides, and generates a construction cost summary with save/export to JSON.</div>
+      <div class="card-tag">Estimating</div>
+    </a>
+
+    <a class="card" href="lastest-viewer/index.html">
+      <div class="card-number">Version 08 &mdash; Latest</div>
+      <div class="card-title">Production Tracking</div>
+      <div class="card-desc">Tracks day-to-date installation progress with binary status per element. Color-coded 3D overlay, timeline scrubber, S-curve dashboard, and JSON import/export for field-to-office data flow.</div>
+      <div class="card-tag latest">Latest</div>
+    </a>
+
+  </div>
+</div>
+
+<!-- About -->
+<div class="section">
+  <div class="section-title">About This Project</div>
+  <div class="about-box">
+    <h3>What is AI BIMing?</h3>
+    <p>This project explores what happens when you pair an experienced construction technologist with AI to build real construction software. Every version of this viewer was developed in a single conversation session with Claude (Anthropic's AI assistant) using Cowork mode &mdash; no traditional IDE, no manual coding.</p>
+    <p style="margin-top:12px;">The goal isn't to replace construction technology platforms, but to demonstrate how AI-assisted development can rapidly prototype and iterate on tools that address genuine field-to-office workflows: model visualization, classification, quantity takeoff, estimating, and production tracking.</p>
+  </div>
+  <div class="about-box">
+    <h3>Technology Stack</h3>
+    <ul>
+      <li><strong>Three.js</strong> &mdash; 3D rendering via WebGL</li>
+      <li><strong>web-ifc</strong> &mdash; IFC file parsing and geometry extraction (WASM)</li>
+      <li><strong>Vanilla ES6 Modules</strong> &mdash; No build step, no frameworks, runs directly in the browser</li>
+      <li><strong>GitHub Pages</strong> &mdash; Static hosting, zero infrastructure</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <a class="gh-link" href="https://github.com/TurnerDigitalBuilder/Claude-Cowork-AI-BIMing" target="_blank" rel="noopener">
+    <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+    View on GitHub
+  </a>
+  <p>Built with Claude Cowork &mdash; an AI-assisted construction technology experiment.</p>
+</footer>
+
+</body>
+</html>
