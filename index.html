@@ -103,6 +103,66 @@
   }
   .models-link svg { width: 16px; height: 16px; }
 
+  /* Dual CTA */
+  .cta-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .cta-option {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px 24px;
+    text-align: center;
+    max-width: 320px;
+    flex: 1;
+    min-width: 260px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .cta-option:hover { border-color: var(--accent); background: var(--surface-hover); }
+  .cta-option .cta-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .cta-option .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .cta-option .cta-btn:hover { transform: translateY(-2px); }
+  .cta-option .cta-btn svg { width: 20px; height: 20px; }
+  .cta-btn.primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 24px rgba(79,140,255,0.3);
+  }
+  .cta-btn.primary:hover { box-shadow: 0 8px 32px rgba(79,140,255,0.4); }
+  .cta-btn.secondary {
+    background: var(--green);
+    color: #0f1117;
+    box-shadow: 0 4px 24px rgba(52,211,153,0.25);
+  }
+  .cta-btn.secondary:hover { box-shadow: 0 8px 32px rgba(52,211,153,0.35); }
+  .cta-option .cta-desc {
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
   /* Section */
   .section {
     max-width: 960px;
@@ -250,11 +310,24 @@
   <div class="hero-badge">Experiment &mdash; Built with Claude</div>
   <h1>AI <span>BIMing</span></h1>
   <p>An open-source experiment in building a full-featured IFC/BIM viewer entirely through AI-assisted development. Each iteration adds real construction technology capabilities &mdash; from 3D model loading to quantity takeoffs, cost estimation, and production tracking.</p>
-  <a class="latest-cta" href="lastest-viewer/index.html" target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-    Launch Latest Viewer
-  </a>
-  <br>
+  <div class="cta-row">
+    <div class="cta-option">
+      <div class="cta-label">Try It Now</div>
+      <a class="cta-btn secondary" href="demo/index.html" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Launch Demo
+      </a>
+      <div class="cta-desc">Pre-loads the structural model so you can explore all features immediately &mdash; no upload needed.</div>
+    </div>
+    <div class="cta-option">
+      <div class="cta-label">Full Viewer</div>
+      <a class="cta-btn primary" href="lastest-viewer/index.html" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Launch Latest Viewer
+      </a>
+      <div class="cta-desc">Upload your own IFC models to view, analyze, and track &mdash; start with a blank canvas.</div>
+    </div>
+  </div>
   <a class="models-link" href="https://github.com/TurnerDigitalBuilder/Claude-Cowork-AI-BIMing/tree/main/models" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
     Download sample IFC models to try the viewers
